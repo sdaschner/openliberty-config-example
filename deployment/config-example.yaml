@@ -1,0 +1,41 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: config-example
+  labels:
+    app: config-example
+spec:
+  selector:
+    app: config-example
+  ports:
+  - port: 9080
+    name: http
+  type: LoadBalancer
+---
+
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: config-example
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: config-example
+    spec:
+      containers:
+      - name: config-example
+        image: sdaschner/config-example:1
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: database-credentials-volume
+          mountPath: /opt/wlp/usr/servers/defaultServer/bootstrap.properties
+          subPath: bootstrap.properties
+          readOnly: true
+      volumes:
+      - name: database-credentials-volume
+        secret:
+          secretName: database-credentials
+      restartPolicy: Always
+---

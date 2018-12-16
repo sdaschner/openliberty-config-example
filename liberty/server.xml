@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server description="Config example">
+
+    <!-- Postgres config-example-db definition -->
+    <dataSource id="DefaultDataSource" jdbcDriverRef="postgresql-driver"
+                type="javax.sql.ConnectionPoolDataSource" transactional="true">
+
+        <properties serverName="config-example-db" portNumber="5432"
+                    databaseName="postgres"
+                    user="${config-example.db.username}"
+                    password="${config-example.db.password}"/>
+
+    </dataSource>
+
+    <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="9080" httpsPort="9443"/>
+    <keyStore id="defaultKeyStore" password="Liberty"/>
+
+</server>

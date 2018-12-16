@@ -1,0 +1,34 @@
+== Build
+
+In order to build the example Docker image, build the `openliberty-postgres` image, first:
+
+----
+$> cd liberty-postgres/
+$> docker build -t openliberty-postgres:1 .
+----
+
+Then you can build the actual project:
+
+----
+$> mvn clean package
+$> docker build -t config-example:1 .
+----
+
+
+== Kubernetes deployment
+
+The Kubernetes deployments expects a secret that contains the database credentials.
+In order to avoid storing the credentials under VCS, we create them via command line:
+
+----
+$> cat <<< EOM > /tmp/bootstrap.properties
+config-example.db.username=postgres
+config-example.db.password=postgres
+EOM
+
+$> kubectl create secret generic database-credentials --from-file=/tmp/bootstrap.properties
+----
+
+Once the secret `database-credentials` has been created, we can deploy our Kubernetes application via the definition under `deployment/config-example.yaml`.
+Please be aware that a Postgres database is expected to be resolvable under the hostname `config-example-db` in the default Kubernetes namespace.
+You can either deploy a Postgres database in the same namespace, or use a headless service to point to an external address.

@@ -1,0 +1,35 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: config-example-db
+  labels:
+    app: config-example-db
+spec:
+  selector:
+    app: config-example-db
+  ports:
+  - port: 5432
+  type: NodePort
+---
+
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: config-example-db
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: config-example-db
+    spec:
+      containers:
+      - image: postgres:9.5
+        name: config-example-db
+        env:
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: postgres
+---
