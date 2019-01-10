@@ -15,17 +15,30 @@ $> docker build -t config-example:1 .
 ----
 
 
-== Kubernetes deployment
+== Run
 
-The Kubernetes deployments expects a secret that contains the database credentials.
-In order to avoid storing the credentials under VCS, we create them via command line:
+In order to run the application in a Docker container, it needs the database credentials at runtime.
+We need access to them locally, without storing them under VCS.
+We can create the file via command line:
 
 ----
 $> cat <<< EOM > /tmp/bootstrap.properties
 config-example.db.username=postgres
 config-example.db.password=postgres
 EOM
+----
 
+In order to run the Docker containers locally, execute `./docker-run-local.sh`.
+As a prerequisite, you need to create a Docker network first: + 
+`docker network create --subnet=192.168.42.0/24 dkrnet`
+
+
+== Kubernetes deployment
+
+The Kubernetes deployments expects a secret that contains the database credentials.
+In order to avoid storing the credentials under VCS, we create the secret via command line:
+
+----
 $> kubectl create secret generic database-credentials --from-file=/tmp/bootstrap.properties
 ----
 

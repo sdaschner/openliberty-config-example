@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <server description="Config example">
 
+    <featureManager>
+        <feature>javaee-8.0</feature>
+        <feature>mpMetrics-1.1</feature>
+        <feature>monitor-1.0</feature>
+    </featureManager>
+
     <!-- Postgres config-example-db definition -->
-    <dataSource id="DefaultDataSource" jdbcDriverRef="postgresql-driver"
+    <dataSource id="DefaultDataSource" jndiName="jdbc/config-example" jdbcDriverRef="postgresql-driver"
                 type="javax.sql.ConnectionPoolDataSource" transactional="true">
 
         <properties serverName="config-example-db" portNumber="5432"
@@ -12,7 +18,13 @@
 
     </dataSource>
 
-    <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="9080" httpsPort="9443"/>
-    <keyStore id="defaultKeyStore" password="Liberty"/>
+    <basicRegistry id="basic" realm="MicroProfileMetrics">
+        <user name="admin" password="adminadmin"/>
+        <user name="nonadmin" password="guest"/>
+    </basicRegistry>
+
+    <administrator-role>
+        <user>admin</user>
+    </administrator-role>
 
 </server>
