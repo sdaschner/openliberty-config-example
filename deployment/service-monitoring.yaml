@@ -1,0 +1,59 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: config-example
+  labels:
+    team: example
+spec:
+  selector:
+    matchLabels:
+      app: config-example
+  endpoints:
+  - basicAuth:
+      password:
+        name: basic-auth
+        key: password
+      username:
+        name: basic-auth
+        key: username
+    port: https
+    scheme: https
+    path: '/metrics/'
+    tlsConfig:
+      insecureSkipVerify: true
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: basic-auth
+data:
+  password: YWRtaW5hZG1pbg==
+  username: YWRtaW4=
+---
+
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus
+spec:
+  serviceAccountName: prometheus
+  serviceMonitorSelector:
+    matchLabels:
+      team: example
+  resources:
+    requests:
+      memory: 400Mi
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+spec:
+  ports:
+  - port: 9090
+    name: http
+  selector:
+    prometheus: prometheus
+---

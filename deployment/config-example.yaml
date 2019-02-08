@@ -10,6 +10,8 @@ spec:
   ports:
   - port: 9080
     name: http
+  - port: 9443
+    name: https
   type: LoadBalancer
 ---
 
@@ -18,7 +20,7 @@ apiVersion: apps/v1beta1
 metadata:
   name: config-example
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
