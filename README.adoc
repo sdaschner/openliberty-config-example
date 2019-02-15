@@ -49,7 +49,7 @@ You can either deploy a Postgres database in the same namespace, or use a headle
 
 == Run Prometheus on Kubernetes
 
-In order to run the Prometheus example on Kubernetes, simply apply all files in the `deployment/` directory to your cluster:
+In order to run the Prometheus example on Kubernetes, simply apply all files in the `deployment/` directory to your cluster after you have created the `database-credentials` secret.
 
 ----
 kubectl apply -f deployment/
