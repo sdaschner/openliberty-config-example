@@ -45,3 +45,19 @@ $> kubectl create secret generic database-credentials --from-file=/tmp/bootstrap
 Once the secret `database-credentials` has been created, we can deploy our Kubernetes application via the definition under `deployment/config-example.yaml`.
 Please be aware that a Postgres database is expected to be resolvable under the hostname `config-example-db` in the default Kubernetes namespace.
 You can either deploy a Postgres database in the same namespace, or use a headless service to point to an external address.
+
+
+== Run Prometheus on Kubernetes
+
+In order to run the Prometheus Operator example on Kubernetes, first install Prometheus Operator on your cluster.
+You can either apply the file in the `deployment/prometheus-operator` directory, or use a https://github.com/helm/charts/tree/master/stable/prometheus-operator[Helm chart^].
+
+In order to make use of Prometheus Operator, simply apply all files in the `deployment/` directory to your cluster, after you have created the `database-credentials` secret.
+
+----
+kubectl apply -f deployment/
+----
+
+This will create the services and deployments for the _example-config_ application, _example-config-db_ database, as well as Prometheus Operator and Grafana instances.
+
+Also have a look at this blog post on how to https://blog.sebastian-daschner.com/entries/prometheus-kubernetes-operator[monitor applications using Prometheus Operator on Kubernetes^].
