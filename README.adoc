@@ -22,7 +22,7 @@ We need access to them locally, without storing them under VCS.
 We can create the file via command line:
 
 ----
-$> cat <<< EOM > /tmp/bootstrap.properties
+$> cat << EOM > /tmp/bootstrap.properties
 config-example.db.username=postgres
 config-example.db.password=postgres
 EOM
